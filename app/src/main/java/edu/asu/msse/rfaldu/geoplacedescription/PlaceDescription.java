@@ -36,33 +36,41 @@ package edu.asu.msse.rfaldu.geoplacedescription;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 
-public class PlaceDescription {
+public class PlaceDescription implements Serializable {
 
+    String key_name;
     String name;
     String description;
     String category;
     String addTitle;
     String addStreet;
+    String image;
     double elevation;
     double latitude;
     double longitude;
 
+    public PlaceDescription(){
+
+    }
 
     //Constructor for initializing all the values
-    PlaceDescription(String jsonStr){
+    public PlaceDescription(String jsonStr, String key_name){
         try {
+            this.key_name = key_name;
             JSONObject jo = new JSONObject(jsonStr);
-            name = jo.getString("name");
-            description = jo.getString("description");
-            category = jo.getString("category");
-            addTitle = jo.getString("addTitle");
-            addStreet = jo.getString("addStreet");
+            addTitle = jo.getString("address-title");
+            addStreet = jo.getString("address-street");
             elevation = jo.getDouble("elevation");
             latitude = jo.getDouble("latitude");
             longitude = jo.getDouble("longitude");
+            name = jo.getString("name");
+            image = jo.getString("image");
+            description = jo.getString("description");
+            category = jo.getString("category");
 
         }
         catch (Exception ex) {

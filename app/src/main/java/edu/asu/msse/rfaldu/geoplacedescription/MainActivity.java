@@ -30,9 +30,13 @@
 
 package edu.asu.msse.rfaldu.geoplacedescription;
 
+import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import org.json.JSONObject;
@@ -41,16 +45,19 @@ import org.json.JSONTokener;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText nameEditText, descriptionEditText, categoryEditText, addTitleEditText, addStreetEditText, elevationEditText, latitudeEditText, longitudeEditText;
     PlaceDescription placeDescriptionObject;
+    PlaceDescriptionLibrary pdlObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nameEditText = (EditText)findViewById(R.id.name_editText);
         descriptionEditText = (EditText)findViewById(R.id.description_editText);
@@ -61,29 +68,45 @@ public class MainActivity extends AppCompatActivity {
         latitudeEditText = (EditText)findViewById(R.id.latitude_editText);
         longitudeEditText = (EditText)findViewById(R.id.longitude_editText);
 
-        //Initializing the object with the values
-        //String str = "{\"name\":\"ASU-Poly\",\"description\":\"Home of ASU's Software Engineering Programs\",\"category\":\"School\",\"addTitle\":\"ASU Software Engineering\", "+
-               // "\"addStreet\": \"7171 E Sonoran Arroyo Mall\\nPeralta Hall 230\\nMesa AZ 85212\", \"elevation\":\"1300.0\", \"latitude\":\"33.306388\", \"longitude\":\"-111.679121\" }";
-        InputStream is = this.getApplicationContext().getResources().openRawResource(R.raw.place_description);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        try{
-            JSONObject placeJson = new JSONObject(new JSONTokener(br.readLine()));
-            placeDescriptionObject = new PlaceDescription(placeJson.toString());
+        Intent intent = getIntent();
+        String placeTitle = intent.getStringExtra("PlaceTitle");
+        pdlObject = intent.getSerializableExtra("PDLObject")!=null ? (PlaceDescriptionLibrary) intent.getSerializableExtra("PDLObject") :
+                new PlaceDescriptionLibrary(this);
+        placeDescriptionObject = new PlaceDescription();
+        placeDescriptionObject = pdlObject.getPlaceDescription(placeTitle);
 
-            //setting the values we got form class object in the Edit Text
-            nameEditText.setText(placeDescriptionObject.name);
-            descriptionEditText.setText(placeDescriptionObject.description);
-            categoryEditText.setText(placeDescriptionObject.category);
-            addTitleEditText.setText(placeDescriptionObject.addTitle);
-            addStreetEditText.setText(placeDescriptionObject.addStreet);
-            elevationEditText.setText(String.valueOf(placeDescriptionObject.elevation));
-            latitudeEditText.setText(String.valueOf(placeDescriptionObject.latitude));
-            longitudeEditText.setText(String.valueOf(placeDescriptionObject.longitude));
+        //setting the values we got form class object in the Edit Text
+        nameEditText.setText(placeDescriptionObject.name);
+        descriptionEditText.setText(placeDescriptionObject.description);
+        categoryEditText.setText(placeDescriptionObject.category);
+        addTitleEditText.setText(placeDescriptionObject.addTitle);
+        addStreetEditText.setText(placeDescriptionObject.addStreet);
+        elevationEditText.setText(String.valueOf(placeDescriptionObject.elevation));
+        latitudeEditText.setText(String.valueOf(placeDescriptionObject.latitude));
+        longitudeEditText.setText(String.valueOf(placeDescriptionObject.longitude));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                Intent i = new Intent();
+                i.putExtra("PDLObject", pdlObject);
+                this.setResult(RESULT_OK,i);
+                finish();
+                return true;
+
+            //case R.id.action_delete:
+
         }
-        catch(Exception ex){
-            Log.d(this.getClass().getSimpleName(),"Exception reaching Place.JSON");
-        }
+        return super.onOptionsItemSelected(item);
+    }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu2, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
