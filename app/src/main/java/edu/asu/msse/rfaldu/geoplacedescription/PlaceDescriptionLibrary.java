@@ -3,6 +3,7 @@ package edu.asu.msse.rfaldu.geoplacedescription;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -87,5 +88,16 @@ public class PlaceDescriptionLibrary implements Serializable{
         return pd;
     }
 
+    public void addPlace(String placeTitle, PlaceDescription placeDescriptionObject){
+        placesHashTable.put(placeTitle,placeDescriptionObject);
+        Log.d("XXXXXXXXXXXXXXXX","Place Added");
+    }
 
+    public void deletePlace(String PlaceTitle){
+        placesHashTable.remove(PlaceTitle);
+    }
+
+    public void editPlace(String placeTitle, PlaceDescription placeDescriptionObject){
+        placesHashTable.put(placeTitle, placeDescriptionObject);
+    }
 }

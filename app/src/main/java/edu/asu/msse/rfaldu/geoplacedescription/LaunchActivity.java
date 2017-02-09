@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
@@ -39,6 +40,7 @@ public class LaunchActivity extends AppCompatActivity implements ListView.OnItem
         //String[] values = new String[] {"ASU-Poly", "ASU-West", "ASU-Tempe", "ASU-Downtown Phoenix"};
 
         ArrayList<String> placeTitles = (ArrayList<String>) pdlObject.getPlaceTitles();
+        Log.d("AAAAAAAAAAAAA",""+placeTitles.size());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_name,placeTitles);
 
@@ -72,6 +74,18 @@ public class LaunchActivity extends AppCompatActivity implements ListView.OnItem
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                Intent intent = new Intent(LaunchActivity.this,AddItemActivity.class);
+                intent.putExtra("PDLObject", pdlObject);
+                this.startActivityForResult(intent,1);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getApplicationContext(),
                 ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
@@ -87,6 +101,7 @@ public class LaunchActivity extends AppCompatActivity implements ListView.OnItem
         pdlObject = data.getSerializableExtra("PDLObject")!=null ? (PlaceDescriptionLibrary) data.getSerializableExtra("PDLObject") :
                 new PlaceDescriptionLibrary(this);
         ArrayList<String> placeTitles = (ArrayList<String>) pdlObject.getPlaceTitles();
+        Log.d("RRRRRRRRRRRR",""+placeTitles.size());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.place_name,placeTitles);
 

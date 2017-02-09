@@ -99,5 +99,87 @@ public class PlaceDescription implements Serializable {
         }
         return ret;
     }
+
+    public String getKey_name() {
+        return key_name;
+    }
+
+    public void setKey_name(String key_name) {
+        this.key_name = key_name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAddTitle() {
+        return addTitle;
+    }
+
+    public void setAddTitle(String addTitle) {
+        this.addTitle = addTitle;
+    }
+
+    public String getAddStreet() {
+        return addStreet;
+    }
+
+    public void setAddStreet(String addStreet) {
+        this.addStreet = addStreet;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public double getElevation() {
+        return elevation;
+    }
+
+    public void setElevation(double elevation) {
+        this.elevation = elevation;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+
 }
 
